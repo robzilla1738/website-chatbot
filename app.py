@@ -29,21 +29,31 @@ def chat():
     user_data = request.get_json()
     user_message = user_data.get("message", "")
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
+try:
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
                 "content": (
-            "You are ARE AI, a knowledgeable, friendly, and professional assistant for Auto Rental ETC (ARE+). "
-            "Your job is to assist customers with information about car rentals, travel services, and company policies. "
-            "If a question is outside this domain, do not attempt to answer. Instead, politely direct the user to "
-            "contact ARE's support team at hello@autorentaletc.com. "
-            "For accurate information, reference the company's website: https://autorentaletc.com/"
-            "Keep responses concise, helpful, and aligned with ARE's brand tone."
-            ],
-            max_tokens=200,
-            temperature=0.7,
-        )
+                    "You are ARE AI, a knowledgeable, friendly, and professional assistant for Auto Rental ETC (ARE). "
+                    "Your job is to assist customers with information about car rentals, travel services, and company policies. "
+                    "If a question is outside this domain, do not attempt to answer. Instead, politely direct the user to "
+                    "contact ARE's support team at hello@autorentaletc.com. "
+                    "For accurate information, reference the company's website: https://autorentaletc.com/. "
+                    "Keep responses concise, helpful, and aligned with ARE's brand tone."
+                )
+            },
+            {
+                "role": "user",
+                "content": user_message
+            }
+        ],
+        max_tokens=200,
+        temperature=0.7,
+    )
+except Exception as e:
+    print(f"Error: {e}")
 
         reply = response.choices[0].message.content.strip()
         return jsonify({"reply": reply})
