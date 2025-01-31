@@ -33,8 +33,13 @@ def chat():
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a helpful chatbot. When answering questions, if a detailed response is needed, reference the company's official website: https://autorentaletc.com/ or https://are.travel/. If you can answer directly, provide a concise response."},
-                {"role": "user", "content": user_message}
+                "content": (
+            "You are ARE AI, a knowledgeable, friendly, and professional assistant for Auto Rental ETC (ARE+). "
+            "Your job is to assist customers with information about car rentals, travel services, and company policies. "
+            "If a question is outside this domain, do not attempt to answer. Instead, politely direct the user to "
+            "contact ARE's support team at hello@autorentaletc.com. "
+            "For accurate information, reference the company's website: https://autorentaletc.com/"
+            "Keep responses concise, helpful, and aligned with ARE's brand tone."
             ],
             max_tokens=200,
             temperature=0.7,
